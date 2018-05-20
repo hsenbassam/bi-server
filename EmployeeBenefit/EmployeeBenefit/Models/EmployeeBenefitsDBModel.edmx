@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BIModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="BIModelStoreContainer">
+          <EntitySet Name="Benefit" EntityType="BIModel.Store.Benefit" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Employee" EntityType="BIModel.Store.Employee" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="EmployeeBenefit" EntityType="BIModel.Store.EmployeeBenefit" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SystemConfig" EntityType="BIModel.Store.SystemConfig" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_EmployeeBenefit_Benefit" Association="BIModel.Store.FK_EmployeeBenefit_Benefit">
+            <End Role="Benefit" EntitySet="Benefit" />
+            <End Role="EmployeeBenefit" EntitySet="EmployeeBenefit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeBenefit_Employee" Association="BIModel.Store.FK_EmployeeBenefit_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeBenefit" EntitySet="EmployeeBenefit" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Benefit">
+          <Key>
+            <PropertyRef Name="BenefitId" />
+          </Key>
+          <Property Name="BenefitId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="DOB" Type="datetime" />
+          <Property Name="Salary" Type="int" />
+        </EntityType>
+        <EntityType Name="EmployeeBenefit">
+          <Key>
+            <PropertyRef Name="EmployeeBenefitId" />
+          </Key>
+          <Property Name="EmployeeBenefitId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="BenefitId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SystemConfig">
+          <Key>
+            <PropertyRef Name="SystemConfigId" />
+          </Key>
+          <Property Name="SystemConfigId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ConfigData" Type="varchar(max)" />
+        </EntityType>
+        <Association Name="FK_EmployeeBenefit_Benefit">
+          <End Role="Benefit" Type="BIModel.Store.Benefit" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EmployeeBenefit" Type="BIModel.Store.EmployeeBenefit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Benefit">
+              <PropertyRef Name="BenefitId" />
+            </Principal>
+            <Dependent Role="EmployeeBenefit">
+              <PropertyRef Name="BenefitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeBenefit_Employee">
+          <End Role="Employee" Type="BIModel.Store.Employee" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EmployeeBenefit" Type="BIModel.Store.EmployeeBenefit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="EmployeeBenefit">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BIModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="BIEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Benefits" EntityType="BIModel.Benefit" />
+          <EntitySet Name="Employees" EntityType="BIModel.Employee" />
+          <EntitySet Name="EmployeeBenefits" EntityType="BIModel.EmployeeBenefit" />
+          <EntitySet Name="SystemConfigs" EntityType="BIModel.SystemConfig" />
+          <AssociationSet Name="FK_EmployeeBenefit_Benefit" Association="BIModel.FK_EmployeeBenefit_Benefit">
+            <End Role="Benefit" EntitySet="Benefits" />
+            <End Role="EmployeeBenefit" EntitySet="EmployeeBenefits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeBenefit_Employee" Association="BIModel.FK_EmployeeBenefit_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeBenefit" EntitySet="EmployeeBenefits" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Benefit">
+          <Key>
+            <PropertyRef Name="BenefitId" />
+          </Key>
+          <Property Name="BenefitId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="EmployeeBenefits" Relationship="BIModel.FK_EmployeeBenefit_Benefit" FromRole="Benefit" ToRole="EmployeeBenefit" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="DOB" Type="DateTime" Precision="3" />
+          <Property Name="Salary" Type="Int32" />
+          <NavigationProperty Name="EmployeeBenefits" Relationship="BIModel.FK_EmployeeBenefit_Employee" FromRole="Employee" ToRole="EmployeeBenefit" />
+        </EntityType>
+        <EntityType Name="EmployeeBenefit">
+          <Key>
+            <PropertyRef Name="EmployeeBenefitId" />
+          </Key>
+          <Property Name="EmployeeBenefitId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="BenefitId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Benefit" Relationship="BIModel.FK_EmployeeBenefit_Benefit" FromRole="EmployeeBenefit" ToRole="Benefit" />
+          <NavigationProperty Name="Employee" Relationship="BIModel.FK_EmployeeBenefit_Employee" FromRole="EmployeeBenefit" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="SystemConfig">
+          <Key>
+            <PropertyRef Name="SystemConfigId" />
+          </Key>
+          <Property Name="SystemConfigId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="ConfigData" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_EmployeeBenefit_Benefit">
+          <End Role="Benefit" Type="BIModel.Benefit" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EmployeeBenefit" Type="BIModel.EmployeeBenefit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Benefit">
+              <PropertyRef Name="BenefitId" />
+            </Principal>
+            <Dependent Role="EmployeeBenefit">
+              <PropertyRef Name="BenefitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeBenefit_Employee">
+          <End Role="Employee" Type="BIModel.Employee" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EmployeeBenefit" Type="BIModel.EmployeeBenefit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="EmployeeBenefit">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BIModelStoreContainer" CdmEntityContainer="BIEntities">
+          <EntitySetMapping Name="Benefits">
+            <EntityTypeMapping TypeName="BIModel.Benefit">
+              <MappingFragment StoreEntitySet="Benefit">
+                <ScalarProperty Name="BenefitId" ColumnName="BenefitId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="BIModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeBenefits">
+            <EntityTypeMapping TypeName="BIModel.EmployeeBenefit">
+              <MappingFragment StoreEntitySet="EmployeeBenefit">
+                <ScalarProperty Name="EmployeeBenefitId" ColumnName="EmployeeBenefitId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="BenefitId" ColumnName="BenefitId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SystemConfigs">
+            <EntityTypeMapping TypeName="BIModel.SystemConfig">
+              <MappingFragment StoreEntitySet="SystemConfig">
+                <ScalarProperty Name="SystemConfigId" ColumnName="SystemConfigId" />
+                <ScalarProperty Name="ConfigData" ColumnName="ConfigData" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

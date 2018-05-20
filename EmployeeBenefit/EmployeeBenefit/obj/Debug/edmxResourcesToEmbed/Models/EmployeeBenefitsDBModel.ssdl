@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BIModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="BIModelStoreContainer">
+    <EntitySet Name="Benefit" EntityType="BIModel.Store.Benefit" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Employee" EntityType="BIModel.Store.Employee" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="EmployeeBenefit" EntityType="BIModel.Store.EmployeeBenefit" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SystemConfig" EntityType="BIModel.Store.SystemConfig" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_EmployeeBenefit_Benefit" Association="BIModel.Store.FK_EmployeeBenefit_Benefit">
+      <End Role="Benefit" EntitySet="Benefit" />
+      <End Role="EmployeeBenefit" EntitySet="EmployeeBenefit" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EmployeeBenefit_Employee" Association="BIModel.Store.FK_EmployeeBenefit_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="EmployeeBenefit" EntitySet="EmployeeBenefit" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Benefit">
+    <Key>
+      <PropertyRef Name="BenefitId" />
+    </Key>
+    <Property Name="BenefitId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="EmployeeId" />
+    </Key>
+    <Property Name="EmployeeId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="DOB" Type="datetime" />
+    <Property Name="Salary" Type="int" />
+  </EntityType>
+  <EntityType Name="EmployeeBenefit">
+    <Key>
+      <PropertyRef Name="EmployeeBenefitId" />
+    </Key>
+    <Property Name="EmployeeBenefitId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeId" Type="int" Nullable="false" />
+    <Property Name="BenefitId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SystemConfig">
+    <Key>
+      <PropertyRef Name="SystemConfigId" />
+    </Key>
+    <Property Name="SystemConfigId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="ConfigData" Type="varchar(max)" />
+  </EntityType>
+  <Association Name="FK_EmployeeBenefit_Benefit">
+    <End Role="Benefit" Type="BIModel.Store.Benefit" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="EmployeeBenefit" Type="BIModel.Store.EmployeeBenefit" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Benefit">
+        <PropertyRef Name="BenefitId" />
+      </Principal>
+      <Dependent Role="EmployeeBenefit">
+        <PropertyRef Name="BenefitId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EmployeeBenefit_Employee">
+    <End Role="Employee" Type="BIModel.Store.Employee" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="EmployeeBenefit" Type="BIModel.Store.EmployeeBenefit" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="EmployeeId" />
+      </Principal>
+      <Dependent Role="EmployeeBenefit">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
