@@ -21,7 +21,11 @@ namespace EmployeeBenefit.Controllers
         public List<Employee> GetEmployees()
         {
 
-            return db.Employees.ToList();
+            var query = (from e in db.Employees select e);
+
+            var res = query.OrderBy(e => e.Name);
+
+            return res.ToList();
         }
 
         // GET api/Employee/5
