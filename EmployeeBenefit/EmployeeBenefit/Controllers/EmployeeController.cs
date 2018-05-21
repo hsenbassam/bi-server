@@ -7,7 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web;
-using System.Web.Http;  
+using System.Web.Http;
 using EmployeeBenefit.Models;
 
 namespace EmployeeBenefit.Controllers
@@ -19,22 +19,22 @@ namespace EmployeeBenefit.Controllers
 
         // GET api/Employee
         public List<Employee> GetEmployees()
-        {            
-   
-           return db.Employees.ToList();
+        {
+
+            return db.Employees.ToList();
         }
 
         // GET api/Employee/5
         public Employee GetEmployee(int id)
-        {       
-                Employee employee = db.Employees.FirstOrDefault(o => o.EmployeeId == id);
-                if (employee == null)
-                {   
-                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, "Employee Not Found"));
-                   
-                }
-               
-            return employee;          
+        {
+            Employee employee = db.Employees.FirstOrDefault(o => o.EmployeeId == id);
+            if (employee == null)
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, "Employee Not Found"));
+
+            }
+
+            return employee;
         }
 
 
@@ -42,11 +42,24 @@ namespace EmployeeBenefit.Controllers
         [Route("GetHighestPaid/{salary}")] // Employees have a salary higher than the argument
         public List<Employee> GetHighestPaid(int salary)
         {
-            return db.Employees.Where(e => e.Salary > salary).ToList();
+
+            var query = (from e in db.Employees
+                         where e.Salary > salary
+                         select e);
+            var res = query.ToList().Select(e => new Employee
+            {
+                EmployeeId = e.EmployeeId,
+                Name = e.Name,
+                Salary = e.Salary,
+                DOB = e.DOB
+            }).ToList();
+
+            return res;
+
         }
 
 
-    
+
 
         // PUT api/Employee/5
         public HttpResponseMessage PutEmployee(int id, Employee employee)
