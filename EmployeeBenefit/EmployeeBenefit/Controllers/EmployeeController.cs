@@ -39,10 +39,10 @@ namespace EmployeeBenefit.Controllers
 
 
         [HttpGet]
-        [Route("GetHighestPaid/{id}")]
-        public List<Employee> GetHighestPaid(int id)
+        [Route("GetHighestPaid/{salary}")] // Employees have a salary higher than the argument
+        public List<Employee> GetHighestPaid(int salary)
         {
-            return db.Employees.Where(e => e.Salary > id).ToList();
+            return db.Employees.Where(e => e.Salary > salary).ToList();
         }
 
 
